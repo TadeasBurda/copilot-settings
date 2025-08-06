@@ -7,14 +7,31 @@ This prompt formats and reorders members of a C# class to follow a clean and con
 - Format code with 4-space indentation.
 - Place opening braces on new lines.
 - Reorder class members in the following order:
-  1. private readonly fields (e.g. _props)
-  2. private fields with default value (e.g. int = 0)
-  3. private nullable fields (e.g. int?)
-  4. protected fields
-  5. internal properties
-  6. public properties
-  7. Constructors
-  8. Methods (in order: public, protected, private)
+  1. constants (`const`, e.g. `const int MAX_DATA_POINTS`)
+  2. abstract fields
+  3. private static readonly fields (e.g. static readonly int _count)
+  4. private static fields with default value (e.g. static int = 0)
+  5. private readonly fields (e.g. readonly string _name)
+  6. private fields with default value (e.g. int = 0)
+  7. private nullable fields (e.g. int?)
+  8. protected static readonly fields
+  9. protected static fields
+  10. protected readonly fields
+  11. protected fields
+  12. abstract properties
+  13. internal properties
+  14. public properties
+  15. properties with the `[ObservableProperty]` attribute
+  16. Constructors
+  17. abstract methods (including async)
+  18. Methods (in order: public, protected, private; async methods are placed after non-async in each group)
+  19. `public void Dispose()` method (always at the end, before the destructor)
+  20. Destructor (`~Class()`, always the very last member)
+- Constants must always be placed first and use UPPER_SNAKE_CASE naming convention (e.g. `MAX_DATA_POINTS`).
+- Abstract fields, properties, and methods must always be placed before non-abstract members of the same type.
+- Properties with the `[ObservableProperty]` attribute must always be grouped together, immediately after normal properties.
+- The `public void Dispose()` method must always be placed at the end of the class, just before the destructor.
+- The destructor (`~Class()`) must always be the very last member of the class.
 - Normalize naming conventions (PascalCase for types and members, camelCase for fields).
 - Remove unnecessary whitespace and align code blocks.
 
@@ -23,72 +40,6 @@ A C# class file with unordered or poorly formatted members.
 
 ## 📤 Output
 A clean, well-formatted C# class with members ordered and styled according to standard conventions.
-
-## 💬 Example
-### Input:
-```csharp
-public class Example {
-public void DoSomething() {}
-private int _age = 20;
-private readonly string _name;
-public string Name { get; set; }
-private bool? _isActive;
-internal int Total { get; set; }
-public Example(string name) { _name = name; }
-}
-protected readonly Services _services;
-protected string _fullName = "ExampleName";
-protected bool? _isInit;
-protected void GetSomething()
-{
-
-}
-private void SaveSomething()
-{
-
-}
-```
-### Output:
-```csharp
-public class Example
-{
-    private readonly string _name;
-
-    private int _age = 20;
-
-    private bool? _isActive;
-
-    protected readonly Services _services;
-
-    protected string _fullName = "ExampleName";
-
-    protected bool? _isInit;
-
-    internal int Total { get; set; }
-
-    public string Name { get; set; }
-
-    public Example(string name, Services services)
-    {
-        _name = name;
-        _services = services;
-    }
-
-    public void DoSomething()
-    {
-    }
-
-    protected void GetSomething()
-    {
-
-    }
-
-    private void SaveSomething()
-    {
-
-    }
-}
-```
 
 ## 🛠️ Notes
 - Do not modify logic or add/remove comments unless necessary for formatting.
