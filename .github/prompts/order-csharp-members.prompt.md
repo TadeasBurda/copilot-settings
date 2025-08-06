@@ -32,6 +32,7 @@ This prompt formats and reorders members of a C# class to follow a clean and con
 - Properties with the `[ObservableProperty]` attribute must always be grouped together, immediately after normal properties.
 - The `public void Dispose()` method must always be placed at the end of the class, just before the destructor.
 - The destructor (`~Class()`) must always be the very last member of the class.
+- If a constructor is a primary constructor, do not change it to a regular constructor; always preserve its primary form.
 - Normalize naming conventions (PascalCase for types and members, camelCase for fields).
 - Remove unnecessary whitespace and align code blocks.
 
@@ -44,3 +45,5 @@ A clean, well-formatted C# class with members ordered and styled according to st
 ## 🛠️ Notes
 - Do not modify logic or add/remove comments unless necessary for formatting.
 - Preserve attributes, region tags, and preprocessor directives.
+- **Remove all helper comments used for member grouping (e.g. `// 1. Constants`, `// (none)`) from the final output. These comments must not remain in the resulting code.**
+	
